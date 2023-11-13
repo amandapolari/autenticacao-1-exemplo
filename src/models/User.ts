@@ -3,6 +3,14 @@ export enum USER_ROLES {
   ADMIN = "ADMIN"
 }
 
+// TokenPayload -> É objeto que guarda as informações do token
+// O ideal é NÃO guardar informações sensíveis no token, em uma aplicação real REMOVER NAME DAQUI.
+export interface TokenPayload {
+    id: string,
+	name: string,
+    role: USER_ROLES
+}
+
 export interface UserDB {
   id: string,
   name: string,
