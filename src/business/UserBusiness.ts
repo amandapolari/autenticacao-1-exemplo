@@ -5,10 +5,13 @@ import { SignupInputDTO, SignupOutputDTO } from "../dtos/signup.dto"
 import { BadRequestError } from "../errors/BadRequestError"
 import { NotFoundError } from "../errors/NotFoundError"
 import { USER_ROLES, User } from "../models/User"
+import { IdGenerator } from "../services/IdGenerator"
 
 export class UserBusiness {
   constructor(
-    private userDatabase: UserDatabase
+    private userDatabase: UserDatabase,
+    // INJETAR DEPENDÊNCIA AQUI:
+    private idGenerator: IdGenerator, 
   ) { }
 
   public getUsers = async (
@@ -39,8 +42,13 @@ export class UserBusiness {
   public signup = async (
     input: SignupInputDTO
   ): Promise<SignupOutputDTO> => {
-    const { id, name, email, password } = input
+    // const { id, name, email, password } = input
+    const { name, email, password } = input
 
+    // GERAR ID AQUI:
+    const id = this.idGenerator.generate()
+
+    // VALIDAR ID AQUI:
     const userDBExists = await this.userDatabase.findUserById(id)
 
     if (userDBExists) {
